@@ -11,10 +11,9 @@ app.get('/get', (req, res) => {
   res.send('hello');
 });
 
-// app.post('/post', (req, res) => {
-//   console.log('[LOG]', req.body);
-//   res.send('this is post method');
-// });
+app.post('/post', (req, res) => {
+  res.send(req.body);
+});
 
 app.listen(3000, () => {
   console.log('server started');

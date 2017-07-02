@@ -14,10 +14,12 @@ const express = () => {
     req.query = urlObj.query;
     req.hostname = req.headers['host'].split(':')[0];
 
-    var index = 0;
-    function next(err) {
-      var route = app.routes[index++];
-      // console.log(route.fn.toString());
+    let index = 0;
+    const next = (err) => {
+      if (index >= app.routes.length){
+        return res.send(`can not access ${method} ${pathname}`);
+      }
+      const route = app.routes[index++];
       if (err) {
         next(err);
       } else {
@@ -32,7 +34,7 @@ const express = () => {
           }
         }
       }
-    }
+    };
     next();
   };
 
@@ -43,10 +45,14 @@ const express = () => {
     app.routes.push(config);
   };
 
+  app.post = (path, fn) => {
+    const config = { method: 'post', path, fn };
+    app.routes.push(config);
+  };
+
   app.use = function (fn) {
     app.routes.push({method: 'middleware', fn: fn});
   };
-
 
   app.listen = (port, fn) => {
     // http.createServer(app)
