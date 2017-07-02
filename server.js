@@ -15,6 +15,14 @@ app.post('/post', (req, res) => {
   res.send(req.body);
 });
 
+app.delete('/delete', (req, res) => {
+  res.send(req.body);
+});
+
+app.put('/put', (req, res) => {
+  res.send(req.body);
+});
+
 app.listen(3000, () => {
   console.log('server started');
 });

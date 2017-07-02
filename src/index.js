@@ -50,6 +50,16 @@ const express = () => {
     app.routes.push(config);
   };
 
+  app.delete = (path, fn) => {
+    const config = { method: 'delete', path, fn };
+    app.routes.push(config);
+  };
+
+  app.put = (path, fn) => {
+    const config = { method: 'put', path, fn };
+    app.routes.push(config);
+  };
+
   app.use = function (fn) {
     app.routes.push({method: 'middleware', fn: fn});
   };
