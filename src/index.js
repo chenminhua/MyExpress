@@ -13,15 +13,40 @@ const express = () => {
     req.path = pathname;
     req.query = urlObj.query;
     req.hostname = req.headers['host'].split(':')[0];
-    if (app.route.path === pathname && app.route.method === method) {
-      app.route.fn(req, res);
+
+    var index = 0;
+    function next(err) {
+      var route = app.routes[index++];
+      // console.log(route.fn.toString());
+      if (err) {
+        next(err);
+      } else {
+        if (route.method === 'middleware') {
+          console.log('处理中间件');
+          route.fn(req, res, next);
+        } else {
+          if ((route.path === pathname || route.path === '*') && (route.method === method || route.method === 'all')) {
+            route.fn(req, res);
+          } else {
+            next();
+          }
+        }
+      }
     }
+    next();
   };
+
+  app.routes = [];
 
   app.get = (path, fn) => {
     const config = { method: 'get', path, fn };
-    app.route = config;
+    app.routes.push(config);
   };
+
+  app.use = function (fn) {
+    app.routes.push({method: 'middleware', fn: fn});
+  };
+
 
   app.listen = (port, fn) => {
     // http.createServer(app)
