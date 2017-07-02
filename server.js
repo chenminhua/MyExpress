@@ -1,8 +1,10 @@
 import express from './src';
-const app = express();
 import bodyParser from './lib/bodyParser';
 
+const app = express();
+
 app.use(bodyParser());
+app.use(express.static(__dirname));
 
 app.get('/get', (req, res) => {
   if (req.query.a) {

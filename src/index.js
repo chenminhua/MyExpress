@@ -1,6 +1,8 @@
 import http from 'http';
 import url from 'url';
 import response from './response';
+import path from 'path';
+import fs from 'fs';
 
 const express = () => {
   const app = (req, res) => {
@@ -59,6 +61,18 @@ const express = () => {
   };
 
   return app;
+};
+
+express.static = function (p) {
+  return function (req, res, next) {
+    var staticPath = path.join(p, req.path);
+    var exists = fs.existsSync(staticPath);
+    if (exists) {
+      res.sendFile(staticPath);
+    } else {
+      next();
+    }
+  }
 };
 
 export default express;
