@@ -5,6 +5,10 @@ const response = {
 };
 
 response.send = function (msg) {
+  if (typeof msg === 'object'){
+    this.writeHead(200, {'Content-Type': 'application/json'});
+    this.end(JSON.stringify(msg));
+  }
   this.writeHead(200, {'Content-Type': 'text/html'});
   this.end(msg);
 };

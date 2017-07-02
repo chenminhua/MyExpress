@@ -13,7 +13,6 @@ const express = () => {
     req.path = pathname;
     req.query = urlObj.query;
     req.hostname = req.headers['host'].split(':')[0];
-
     if (app.route.path === pathname && app.route.method === method) {
       app.route.fn(req, res);
     }
