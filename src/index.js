@@ -40,25 +40,12 @@ const express = () => {
 
   app.routes = [];
 
-  app.get = (path, fn) => {
-    const config = { method: 'get', path, fn };
-    app.routes.push(config);
-  };
-
-  app.post = (path, fn) => {
-    const config = { method: 'post', path, fn };
-    app.routes.push(config);
-  };
-
-  app.delete = (path, fn) => {
-    const config = { method: 'delete', path, fn };
-    app.routes.push(config);
-  };
-
-  app.put = (path, fn) => {
-    const config = { method: 'put', path, fn };
-    app.routes.push(config);
-  };
+  const methods = ['get', 'post', 'delete', 'put'];
+  methods.forEach(method => {
+    app[method] = (path, fn) => {
+      app.routes.push({method, path, fn});
+    }
+  });
 
   app.use = function (fn) {
     app.routes.push({method: 'middleware', fn: fn});
